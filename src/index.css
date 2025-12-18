@@ -1,0 +1,6 @@
+#waveform ::part(cursor):before {
+  content: '🏄';
+}
+#waveform ::part(region) {
+  font-family: fantasy;
+}
