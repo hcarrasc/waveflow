@@ -10,25 +10,62 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
         {},
     );
     const [cover, setCover] = useState<string | null>(null);
-    const [audioUrl, setAudioUrl] = useState<string | null>(null);
+
+    const handlePlayPause = () => {
+        wavesurferRef.current?.playPause();
+    };
 
     useEffect(() => {
-        if (!audioUrl || !waveformRef.current) return;
+        if (!audioFile) return;
 
-        wavesurferRef.current = WaveSurfer.create({
+        let coverUrl: string | null = null;
+
+        (async () => {
+            const metadata = await parseBlob(audioFile);
+            const tags = metadata.common;
+            console.log(tags);
+            const picture = tags.picture?.[0];
+            if (picture) {
+                coverUrl = URL.createObjectURL(
+                    new Blob([picture.data as BufferSource], { type: picture.format }),
+                );
+            }
+            setCover(coverUrl);
+            setMetadata({
+                title: tags.title,
+                artist: tags.artist,
+                album: tags.album,
+            });
+            handlePlayPause();
+        })();
+
+        return () => {
+            if (coverUrl) {
+                URL.revokeObjectURL(coverUrl);
+            }
+        };
+    }, [audioFile]);
+
+    useEffect(() => {
+        if (!audioFile || !waveformRef.current) return;
+
+        const ws = WaveSurfer.create({
             container: waveformRef.current,
             waveColor: '#9398d8ff',
             progressColor: '#2563eb',
             cursorColor: '#111827',
             height: 50,
         });
+        wavesurferRef.current = ws;
 
-        wavesurferRef.current.load(audioUrl);
+        const url = URL.createObjectURL(audioFile);
+        ws.load(url);
 
         return () => {
-            wavesurferRef.current?.destroy();
+            ws.destroy();
+            URL.revokeObjectURL(url);
         };
-    }, [audioUrl]);
+    }, [audioFile]);
 
     interface Picture {
         data: number[];
@@ -46,43 +83,9 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
         tags: Tags;
     }
 
-    const handleFile = async (file: File) => {
-        // URL del audio
-        const url = URL.createObjectURL(file);
-        setAudioUrl(url);
-
-        const metadata = await parseBlob(file);
-        const tags = metadata.common;
-        console.log(tags);
-
-        let coverUrl = null;
-
-        if (tags.picture && tags.picture.length > 0) {
-            const picture = tags.picture[0];
-            coverUrl = URL.createObjectURL(
-                new Blob([picture.data as BufferSource], { type: picture.format }),
-            );
-        }
-        setCover(coverUrl);
-        setMetadata({
-            title: tags.title,
-            artist: tags.artist,
-            album: tags.album,
-        });
-    };
-
-    const handlePlayPause = () => {
-        wavesurferRef.current?.playPause();
-    };
-
     return (
         <div className="">
             <div style={{ maxWidth: 400 }}>
-                <input
-                    type="file"
-                    accept="audio/mp3"
-                    onChange={(e) => e.target.files && handleFile(e.target.files[0])}
-                />
                 {cover && <img src={cover} alt="Cover" style={{ width: '100%', marginTop: 10 }} />}
                 <h3>
                     {metadata.artist || 'Artista desconocido'} -{' '}
