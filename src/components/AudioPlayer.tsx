@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import { parseBlob } from 'music-metadata';
+import music_placeholder from '../assets/music_placeholder.png';
 
 export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
     const waveformRef = useRef<HTMLDivElement>(null);
@@ -23,7 +24,6 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
         (async () => {
             const metadata = await parseBlob(audioFile);
             const tags = metadata.common;
-            console.log(tags);
             const picture = tags.picture?.[0];
             if (picture) {
                 coverUrl = URL.createObjectURL(
@@ -69,7 +69,13 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
 
     return (
         <section className="audio-player">
-            <div className="cover-container">{cover && <img src={cover} alt="Cover" />}</div>
+            <div className="cover-container">
+                {cover ? (
+                    <img src={cover} alt="Cover" />
+                ) : (
+                    <img src={music_placeholder} alt="Placeholder" />
+                )}
+            </div>
             <div className="controls-container">
                 <h3>
                     {metadata.artist || 'Artista desconocido'} -{' '}
