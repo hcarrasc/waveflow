@@ -5,6 +5,7 @@ import music_placeholder from '../assets/music_placeholder.png';
 import play from '../assets/play.png';
 import back from '../assets/back.png';
 import next from '../assets/next.png';
+import pause from '../assets/pause.png';
 
 export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
     const waveformRef = useRef<HTMLDivElement>(null);
@@ -14,9 +15,11 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
         {},
     );
     const [cover, setCover] = useState<string | null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const handlePlayPause = () => {
         wavesurferRef.current?.playPause();
+        setIsPlaying(!isPlaying);
     };
 
     useEffect(() => {
@@ -57,7 +60,7 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
             waveColor: '#979effff',
             progressColor: '#2563eb',
             cursorColor: '#ffffffff',
-            height: 50,
+            height: 60,
         });
         wavesurferRef.current = ws;
 
@@ -69,6 +72,21 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
             URL.revokeObjectURL(url);
         };
     }, [audioFile]);
+
+    useEffect(() => {
+        const ws = wavesurferRef.current;
+        if (!ws) return;
+
+        const handleFinish = () => {
+            ws.pause();
+        };
+
+        ws.on('finish', handleFinish);
+
+        return () => {
+            ws.un('finish', handleFinish);
+        };
+    }, []);
 
     return (
         <section className="audio-player">
@@ -91,7 +109,7 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
                         <img src={back} alt="Back" />
                     </button>
                     <button onClick={handlePlayPause} className="btn-control">
-                        <img src={play} alt="Play/Pause" />
+                        <img src={isPlaying ? pause : play} alt="Play/Pause" />
                     </button>
                     <button onClick={handlePlayPause} className="btn-control">
                         <img src={next} alt="Next" />
