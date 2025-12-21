@@ -2,6 +2,7 @@ import { AudioPlayer } from './components/AudioPlayer';
 import { useState } from 'react';
 import { parseBlob } from 'music-metadata';
 import { type AudioFile } from './types/metadata.ts';
+import music_placeholder from './assets/music_placeholder.png';
 
 export default function App() {
     const [audioFiles, setAudioFiles] = useState<AudioFile[]>([]);
@@ -53,6 +54,7 @@ export default function App() {
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th> </th>
                         <th>Artista</th>
                         <th>Titulo</th>
                     </tr>
@@ -61,6 +63,21 @@ export default function App() {
                     {audioFiles.map((audioFile, index) => (
                         <tr key={index} onClick={(e) => handleMp3(e, audioFile.file)}>
                             <td>{index + 1}</td>
+                            <td>
+                                <img
+                                    className="cover-table"
+                                    src={
+                                        audioFile.picture
+                                            ? URL.createObjectURL(
+                                                  new Blob(
+                                                      [new Uint8Array(audioFile.picture.data)],
+                                                      { type: audioFile.picture.format },
+                                                  ),
+                                              )
+                                            : music_placeholder
+                                    }
+                                />
+                            </td>
                             <td>{audioFile.artist ? audioFile.artist : audioFile.file.name}</td>
                             <td>{audioFile.title}</td>
                         </tr>

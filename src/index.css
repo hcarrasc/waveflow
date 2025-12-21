@@ -75,7 +75,6 @@ body {
     background-color: #1f1f1f;
     color: white;
 }
-
 .tabla-zebra th,
 .tabla-zebra td {
     padding: 0.4rem;
@@ -87,11 +86,16 @@ body {
 .tabla-zebra tbody tr:nth-child(odd) {
     background-color: #3d3d3e;
 }
-
 .tabla-zebra tbody tr:nth-child(even) {
     background-color: #1f1f1f;
 }
-
 .tabla-zebra tbody tr:hover {
     background-color: #000000;
+}
+.cover-table {
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }

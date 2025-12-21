@@ -81,8 +81,9 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
             </div>
             <div className="metadata-container">
                 <h3>
-                    {metadata.artist || 'Artista desconocido'} -{' '}
-                    {metadata.title || 'Título desconocido'}
+                    {metadata.artist && metadata.title
+                        ? `${metadata.artist} - ${metadata.title}`
+                        : audioFile?.name}
                 </h3>
                 <div ref={waveformRef} />
                 <div className="controls-container">
