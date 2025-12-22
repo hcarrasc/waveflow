@@ -20,8 +20,10 @@ body {
 	margin: 0 auto;
 	padding: 2rem;
 }
-
 .audio-player {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 	display: flex;
     background: #1e1e1e;
     height: 18rem;

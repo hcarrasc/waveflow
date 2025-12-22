@@ -35,12 +35,14 @@ export default function App() {
     };
 
     const handleMp3 = (e: React.MouseEvent<HTMLTableRowElement, MouseEvent>, file: File) => {
+        e.preventDefault();
         setSelectedAudioFile(file);
     };
 
     return (
         <div className="app-container">
             <AudioPlayer audioFile={selectedAudioFile} />
+
             <input
                 className="input-file"
                 type="file"

@@ -57,10 +57,13 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
 
         const ws = WaveSurfer.create({
             container: waveformRef.current,
-            waveColor: '#979effff',
+            waveColor: '#3d3d3e',
             progressColor: '#2563eb',
             cursorColor: '#ffffffff',
             height: 60,
+            barWidth: 3,
+            barGap: 1,
+            barRadius: 2,
         });
         wavesurferRef.current = ws;
 
