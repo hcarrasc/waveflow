@@ -46,7 +46,7 @@ export default function App() {
         <div className="app-container">
             {configsModalOpen && (
                 <ConfigsModal isOpen={configsModalOpen} onClose={() => setConfigsModalOpen(false)}>
-                    <h2>Select your audio folder</h2>
+                    <h2>Select your music folder</h2>
                     <input
                         className="input-file"
                         type="file"
@@ -56,7 +56,7 @@ export default function App() {
                     />
                 </ConfigsModal>
             )}
-            <AudioPlayer audioFile={selectedAudioFile} />
+            <AudioPlayer audioFile={selectedAudioFile} setConfigsModalOpen={setConfigsModalOpen} />
 
             <section className="track-list">
                 <table className="tabla-zebra">

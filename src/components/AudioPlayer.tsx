@@ -6,8 +6,14 @@ import play from '../assets/play.png';
 import back from '../assets/back.png';
 import next from '../assets/next.png';
 import pause from '../assets/pause.png';
+import music_folder from '../assets/music_folder.png';
 
-export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
+interface AudioPlayerProps {
+    audioFile: File | null;
+    setConfigsModalOpen: (open: boolean) => void;
+}
+
+export function AudioPlayer({ audioFile, setConfigsModalOpen }: AudioPlayerProps) {
     const waveformRef = useRef<HTMLDivElement>(null);
     const wavesurferRef = useRef<WaveSurfer | null>(null);
 
@@ -116,6 +122,9 @@ export function AudioPlayer({ audioFile }: { audioFile: File | null }) {
                     </button>
                     <button onClick={handlePlayPause} className="btn-control">
                         <img src={next} alt="Next" />
+                    </button>
+                    <button onClick={() => setConfigsModalOpen(true)} className="btn-control">
+                        <img src={music_folder} alt="Music Folder" />
                     </button>
                 </div>
                 <div className="time-container">
