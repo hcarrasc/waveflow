@@ -8,7 +8,6 @@ import back from '../assets/back.png';
 import next from '../assets/next.png';
 import pause from '../assets/pause.png';
 import loop from '../assets/loop.png';
-import shuffle from '../assets/shuffle.png';
 import music_folder from '../assets/music_folder.png';
 
 interface AudioPlayerProps {
