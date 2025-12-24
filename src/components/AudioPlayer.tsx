@@ -98,16 +98,20 @@ export function AudioPlayer({ audioFile, setConfigsModalOpen }: AudioPlayerProps
 
         const url = URL.createObjectURL(audioFile);
         ws.load(url);
+        wavesurfer.current.on('ready', () => {
+            setTotalTime(ws.getDuration());
+        });
         wavesurfer.current.on('audioprocess', (time) => {
             setCurrentTime(time);
         });
-        wavesurfer.current.on('ready', () => {
-            setTotalTime(ws.getDuration());
+        wavesurfer.current.on('finish', () => {
+            setIsPlaying(false);
         });
 
         return () => {
             ws.destroy();
             URL.revokeObjectURL(url);
+            setIsPlaying(false);
         };
     }, [audioFile]);
 
