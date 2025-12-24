@@ -24,6 +24,7 @@ export function AudioPlayer({ audioFile, setConfigsModalOpen }: AudioPlayerProps
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [totalTime, setTotalTime] = useState(0);
+    const [folderSelected, setFolderSelected] = useState(false);
 
     const handlePlayPause = useCallback(() => {
         wavesurferRef.current?.playPause();
@@ -107,31 +108,42 @@ export function AudioPlayer({ audioFile, setConfigsModalOpen }: AudioPlayerProps
                 )}
             </div>
             <div className="metadata-container">
-                <h3>
-                    {metadata.artist && metadata.title
-                        ? `${metadata.artist} - ${metadata.title}`
-                        : audioFile?.name}
-                </h3>
+                {!audioFile ? (
+                    <div className="controls-container"></div>
+                ) : (
+                    <>
+                        <h3>
+                            {metadata.artist && metadata.title
+                                ? `${metadata.artist} - ${metadata.title}`
+                                : audioFile?.name}
+                        </h3>
+                        <div className="controls-container">
+                            <button onClick={handlePlayPause} className="btn-control">
+                                <img src={back} alt="Back" />
+                            </button>
 
-                <div className="controls-container">
-                    <button onClick={handlePlayPause} className="btn-control">
-                        <img src={back} alt="Back" />
-                    </button>
-                    <button onClick={handlePlayPause} className="btn-control">
-                        <img src={isPlaying ? pause : play} alt="Play/Pause" />
-                    </button>
-                    <button onClick={handlePlayPause} className="btn-control">
-                        <img src={next} alt="Next" />
-                    </button>
-                    <button onClick={() => setConfigsModalOpen(true)} className="btn-control">
-                        <img src={music_folder} alt="Music Folder" />
-                    </button>
-                </div>
-                <div className="time-container">
-                    <div className="time">{formatTime(currentTime)}</div>
-                    <div className="waveform" ref={waveformRef} />
-                    <div className="time">{formatTime(totalTime)}</div>
-                </div>
+                            <button onClick={handlePlayPause} className="btn-control">
+                                <img src={isPlaying ? pause : play} alt="Play/Pause" />
+                            </button>
+
+                            <button onClick={handlePlayPause} className="btn-control">
+                                <img src={next} alt="Next" />
+                            </button>
+
+                            <button
+                                onClick={() => setConfigsModalOpen(true)}
+                                className="btn-control"
+                            >
+                                <img src={music_folder} alt="Music Folder" />
+                            </button>
+                        </div>
+                        <div className="time-container">
+                            <div className="time">{formatTime(currentTime)}</div>
+                            <div className="waveform" ref={waveformRef} />
+                            <div className="time">{formatTime(totalTime)}</div>
+                        </div>
+                    </>
+                )}
             </div>
         </section>
     );
