@@ -99,9 +99,7 @@ body {
 .tabla-zebra td {
     padding: 0.4rem;
     text-align: left;
-}
-.tabla-zebra td {
-	cursor: pointer;
+    cursor: pointer;
 }
 .tabla-zebra tbody tr:nth-child(odd) {
     background-color: #3d3d3e;

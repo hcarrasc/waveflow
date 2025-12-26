@@ -10,6 +10,26 @@ export default function App() {
     const [selectedAudioFile, setSelectedAudioFile] = useState<File | null>(null);
     const [configsModalOpen, setConfigsModalOpen] = useState(true);
 
+    const sortByArtist = () => {
+        setAudioFiles((prev) =>
+            [...prev].sort((a, b) => {
+                const artistA = a.artist?.toLowerCase() || '';
+                const artistB = b.artist?.toLowerCase() || '';
+                return artistA.localeCompare(artistB);
+            }),
+        );
+    };
+
+    const sortByTitle = () => {
+        setAudioFiles((prev) =>
+            [...prev].sort((a, b) => {
+                const titleA = a.title?.toLowerCase() || '';
+                const titleB = b.title?.toLowerCase() || '';
+                return titleA.localeCompare(titleB);
+            }),
+        );
+    };
+
     const handleFolder = async (e: React.ChangeEvent<HTMLInputElement>) => {
         let files = Array.from(e.target.files || []);
         files = files.filter((file: File) => file.type.startsWith('audio/'));
@@ -34,6 +54,7 @@ export default function App() {
         );
 
         setAudioFiles(audioFilesWithMetadata);
+        sortByArtist();
         setConfigsModalOpen(false);
     };
 
@@ -70,8 +91,8 @@ export default function App() {
                         <tr>
                             <th>#</th>
                             <th> </th>
-                            <th>Artista</th>
-                            <th>Titulo</th>
+                            <th onClick={sortByArtist}>Artista</th>
+                            <th onClick={sortByTitle}>Titulo</th>
                         </tr>
                     </thead>
                     <tbody>
