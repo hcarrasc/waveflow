@@ -146,7 +146,12 @@ export function AudioPlayer({
     }, [audioFile, audioFiles, audioFilesIndex, setSelectedAudioFile]);
 
     return (
-        <section className="audio-player">
+        <section
+            className="audio-player"
+            style={{
+                backgroundImage: `url(${cover || music_placeholder})`,
+            }}
+        >
             <div className="cover-container">
                 {cover ? (
                     <img src={cover} alt="Cover" />

@@ -25,20 +25,30 @@ body {
     top: 0;
     z-index: 1000;
 	display: flex;
-    background: #1e1e1e;
     height: 18rem;
 }
+.audio-player::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    z-index: -1;
+}
 .cover-container {
-     width: auto;
-     height: 18rem;
-     object-fit: contain;
-     display: flex;
-     align-items: center;
-     justify-content: center;
+    width: auto;
+    height: 18rem;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .cover-container img {
-     height: 100%;
-     margin: auto;
+    height: 100%;
+    margin: auto;
 }
 .metadata-container {
 	padding: 2rem;
@@ -152,9 +162,12 @@ body {
     cursor: pointer;
 }
 
-@media screen and (max-width: 36.875rem) {
+@media screen and (max-width: 50.875rem) {
     html {
         font-size: 12px;
+    }
+    .app-container {
+        padding: 1rem;
     }
     .audio-player {
         flex-direction: column;
